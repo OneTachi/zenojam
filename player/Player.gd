@@ -1,10 +1,12 @@
 extends KinematicBody2D
 
 var moveIncr = .2
-var xMove = 0
-var yMove = 0
-var jumped = false
-var jump_position
+var velocity = Vector2(0, 0)
+
+var max_jump = -800
+var reached_height_max
+const jump_force = -650
+var jumped
 
 func _ready():
 	pass
@@ -13,25 +15,25 @@ func _physics_process(delta):
 	var xRaw = Input.get_action_strength("right") - Input.get_action_strength("left")
 	
 	if xRaw != 0:
-		xMove = lerp(xMove, xRaw * 350, moveIncr)
+		velocity.x = lerp(velocity.x, xRaw * 350, moveIncr)
 	else:
-		xMove = lerp(xMove, 0, .5)
+		velocity.x = lerp(velocity.x, 0, .5)
 	
-	if !jumped && Input.is_action_pressed("jump"): 
-		if !yMove <= 0:
-			jump_position = self.position.y
-		yMove = -1000
-	
-	if !is_on_floor() && yMove < 0 && self.position.y - jump_position < -200:
+	if is_on_floor() && Input.is_action_just_pressed("jump"): 
+		velocity.y = jump_force
 		jumped = true
-	elif is_on_floor():
+	
+	if jumped && Input.is_action_pressed("jump"):
+		velocity.y -= 25
+	
+	if Input.is_action_just_released("jump") || velocity.y <= max_jump:
 		jumped = false
+	print(velocity.y)
 	
-	if jump_position != null:
-		print(self.position.y - jump_position )
-	yMove = min(yMove + 50, 1000)
-	if jumped && yMove > 0 && yMove < 1000: 
-		yMove = yMove * (1 + .05) 
+	if is_on_floor():
+		reached_height_max = false
 	
-	var movement = Vector2(xMove, yMove)
-	move_and_slide(movement, Vector2.UP)
+	
+	velocity.y = min(velocity.y + 50, 1000)
+	
+	move_and_slide(velocity, Vector2.UP)
