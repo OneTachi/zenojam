@@ -2,9 +2,12 @@ extends KinematicBody2D
 
 onready var sprite = $Sprite
 onready var walk_timer = $"WalkingHere!"
+onready var player = $'../Player'
+onready var raycast = $RayCast2D
 
 enum {
-	WALK
+	WALK,
+	ATTACK
 }
 
 var state = WALK
@@ -19,7 +22,8 @@ func _physics_process(delta):
 	match state:
 		
 		WALK:
-			if self.position.distance_to(walk_to) < 5 && walk_timer.is_stopped():
+			#TODO: Possible addition of boundary detection
+			if (self.position.distance_to(walk_to) < 5 && walk_timer.is_stopped()):
 				walk_dir = Vector2(0, self.position.y)
 				velocity = Vector2.ZERO
 				sprite.play('idle')
@@ -30,14 +34,21 @@ func _physics_process(delta):
 				walk_dir = position.direction_to(walk_to)
 				velocity = walk_dir * 100
 			
+			velocity.y += 10
+			velocity.y = max(velocity.y, 100)
+		
+		ATTACK:
+			pass
 	
 	move_and_slide(velocity)
 
 func change_sprite_dir():
 	if velocity.x > 0:
 		sprite.flip_h = false
+		raycast.cast_to = Vector2(0, 20)
 	elif velocity.x < 0:
 		sprite.flip_h = true
+		raycast.cast_to = Vector2(0, -20)
 	else:
 		pass
 
