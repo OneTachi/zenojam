@@ -98,7 +98,6 @@ script = ExtResource( 39 )
 [node name="Sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
 animation = "idle"
-frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -113,9 +112,11 @@ rotation = -1.5708
 cast_to = Vector2( 0, 20 )
 collision_mask = 5
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="EnemyDetection" type="Area2D" parent="."]
+collision_layer = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetection"]
 shape = SubResource( 3 )
 
 [connection signal="timeout" from="WalkingHere!" to="." method="_on_WalkingHere_timeout"]
+[connection signal="body_entered" from="EnemyDetection" to="." method="_on_EnemyDetection_body_entered"]

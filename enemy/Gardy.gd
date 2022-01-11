@@ -41,7 +41,11 @@ func _physics_process(delta):
 			velocity.y = min(velocity.y, 100)
 		
 		ATTACK:
-			pass
+			walk_dir = position.direction_to(player.position)
+			walk_dir.y = 0
+			velocity = walk_dir * 200
+			sprite.play('walk')
+			change_sprite_dir()
 	
 	move_and_slide(velocity)
 
@@ -64,3 +68,7 @@ func _on_WalkingHere_timeout():
 
 func _on_Restriction_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 	walk_to = Vector2(-walk_to.x, self.position.y)
+
+
+func _on_EnemyDetection_body_entered(body):
+	state = 1
