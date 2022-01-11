@@ -13,12 +13,14 @@ enum {
 var state = WALK
 var velocity = Vector2(0,0)
 
-onready var walk_to = Vector2(rand_range(-200, 200), position.y)
+onready var walk_to = Vector2(rand_range(-200, 200), self.position.y)
 var walk_dir
 
+var outside = false
 
 
 func _physics_process(delta):
+	randomize()
 	match state:
 		
 		WALK:
@@ -32,10 +34,11 @@ func _physics_process(delta):
 				sprite.play('walk')
 				change_sprite_dir()
 				walk_dir = position.direction_to(walk_to)
+				walk_dir.y = 0
 				velocity = walk_dir * 100
 			
 			velocity.y += 10
-			velocity.y = max(velocity.y, 100)
+			velocity.y = min(velocity.y, 100)
 		
 		ATTACK:
 			pass
@@ -55,6 +58,9 @@ func change_sprite_dir():
 
 
 func _on_WalkingHere_timeout():
-	var new_position = rand_range(-200, 200)
+	var new_position = rand_range(-150, 150)
 	walk_to = Vector2(new_position, self.position.y)
-	print(walk_to)
+
+
+func _on_Restriction_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
+	walk_to = Vector2(-walk_to.x, self.position.y)
