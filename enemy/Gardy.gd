@@ -4,10 +4,13 @@ onready var sprite = $Sprite
 onready var walk_timer = $"WalkingHere!"
 onready var player = $'../Player'
 onready var raycast = $RayCast2D
+onready var anim_tree = $AnimationTree
+onready var anim = anim_tree['parameters/playback']
 
 enum {
 	WALK,
-	ATTACK
+	ATTACK,
+	BATTACK
 }
 
 var state = WALK
@@ -28,14 +31,15 @@ func _physics_process(delta):
 			if (self.position.distance_to(walk_to) < 5 && walk_timer.is_stopped()):
 				walk_dir = Vector2(0, self.position.y)
 				velocity = Vector2.ZERO
-				sprite.play('idle')
+				anim.travel("idle")
 				walk_timer.start(randi() % 3)
 			if walk_timer.is_stopped():
-				sprite.play('walk')
+				anim.travel("walk")
 				change_sprite_dir()
 				walk_dir = position.direction_to(walk_to)
 				walk_dir.y = 0
 				velocity = walk_dir * 100
+				
 			
 			velocity.y += 10
 			velocity.y = min(velocity.y, 100)
@@ -44,8 +48,10 @@ func _physics_process(delta):
 			walk_dir = position.direction_to(player.position)
 			walk_dir.y = 0
 			velocity = walk_dir * 200
-			sprite.play('walk')
+			anim.travel('run')
 			change_sprite_dir()
+			if self.position.distance_to(player.position) < 50:
+				make_attack()
 	
 	move_and_slide(velocity)
 
@@ -59,7 +65,10 @@ func change_sprite_dir():
 	else:
 		pass
 
-
+func make_attack():
+	pass
+	#sprite.play('attack1')
+	#(9.5, -8.5)
 
 func _on_WalkingHere_timeout():
 	var new_position = rand_range(-150, 150)
@@ -72,3 +81,4 @@ func _on_Restriction_body_shape_exited(body_rid, body, body_shape_index, local_s
 
 func _on_EnemyDetection_body_entered(body):
 	state = 1
+
