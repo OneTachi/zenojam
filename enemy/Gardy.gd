@@ -20,7 +20,7 @@ onready var walk_to = Vector2(rand_range(-200, 200), self.position.y)
 var walk_dir
 
 var outside = false
-
+var attacking = false
 
 func _physics_process(delta):
 	randomize()
@@ -52,6 +52,9 @@ func _physics_process(delta):
 			change_sprite_dir()
 			if self.position.distance_to(player.position) < 50:
 				make_attack()
+				velocity = Vector2.ZERO
+			if attacking:
+				 velocity = Vector2.ZERO
 	
 	move_and_slide(velocity)
 
@@ -66,9 +69,8 @@ func change_sprite_dir():
 		pass
 
 func make_attack():
-	pass
-	#sprite.play('attack1')
-	#(9.5, -8.5)
+	anim.travel('attack1')
+	attacking = true
 
 func _on_WalkingHere_timeout():
 	var new_position = rand_range(-150, 150)
