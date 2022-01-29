@@ -51,10 +51,10 @@ func _physics_process(delta):
 			anim.travel('run')
 			change_sprite_dir()
 			if self.position.distance_to(player.position) < 50:
-				make_attack()
-				velocity = Vector2.ZERO
+				attacking = true
 			if attacking:
-				 velocity = Vector2.ZERO
+				velocity = Vector2.ZERO
+				make_attack()
 	
 	move_and_slide(velocity)
 
@@ -70,7 +70,10 @@ func change_sprite_dir():
 
 func make_attack():
 	anim.travel('attack1')
-	attacking = true
+	if not sprite.flip_h: 
+		sprite.offset = Vector2(9.5, -8.5)
+	elif sprite.flip_h:
+		sprite.offset = Vector2(-9.5, -8.5)
 
 func _on_WalkingHere_timeout():
 	var new_position = rand_range(-150, 150)
@@ -83,4 +86,8 @@ func _on_Restriction_body_shape_exited(body_rid, body, body_shape_index, local_s
 
 func _on_EnemyDetection_body_entered(body):
 	state = 1
+
+func finish_attack():
+	attacking = false
+	sprite.offset = Vector2(0, 0)
 

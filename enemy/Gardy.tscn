@@ -121,7 +121,7 @@ auto_advance = true
 
 [sub_resource type="AnimationNodeStateMachine" id=5]
 states/attack1/node = SubResource( 21 )
-states/attack1/position = Vector2( 572, 82 )
+states/attack1/position = Vector2( 570, 82 )
 states/idle/node = SubResource( 12 )
 states/idle/position = Vector2( 202, 50 )
 states/run/node = SubResource( 9 )
@@ -147,17 +147,19 @@ tracks/0/keys = {
 "update": 1,
 "values": [ "attack1" ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:offset")
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
+"times": PoolRealArray( 1 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 9.5, -8.5 ) ]
+"values": [ {
+"args": [  ],
+"method": "finish_attack"
+} ]
 }
 
 [sub_resource type="Animation" id=7]
@@ -175,18 +177,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [ "idle", "idle" ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ) ]
-}
 
 [sub_resource type="Animation" id=11]
 resource_name = "run"
@@ -197,22 +187,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ "run" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ) ]
+"values": [ "run", "run" ]
 }
 
 [sub_resource type="Animation" id=20]
@@ -229,18 +207,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [ "walk" ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ) ]
-}
 
 [node name="Gardy" type="KinematicBody2D"]
 scale = Vector2( 2, 2 )
@@ -251,6 +217,7 @@ script = ExtResource( 39 )
 [node name="Sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
 animation = "idle"
+frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
