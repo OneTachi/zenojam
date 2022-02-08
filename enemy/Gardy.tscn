@@ -58,7 +58,7 @@ animations = [ {
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 11 ), ExtResource( 5 ), ExtResource( 8 ), ExtResource( 10 ), ExtResource( 7 ), ExtResource( 12 ) ],
-"loop": false,
+"loop": true,
 "name": "attack1",
 "speed": 7.0
 }, {
@@ -117,11 +117,10 @@ animation = "walk"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=23]
 switch_mode = 2
-auto_advance = true
 
 [sub_resource type="AnimationNodeStateMachine" id=5]
 states/attack1/node = SubResource( 21 )
-states/attack1/position = Vector2( 570, 82 )
+states/attack1/position = Vector2( 694, 123 )
 states/idle/node = SubResource( 12 )
 states/idle/position = Vector2( 202, 50 )
 states/run/node = SubResource( 9 )
@@ -135,6 +134,7 @@ start_node = "idle"
 
 [sub_resource type="Animation" id=24]
 resource_name = "attack1"
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:animation")
 tracks/0/interp = 1
@@ -142,10 +142,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ "attack1" ]
+"values": [ "attack1", "attack1" ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath(".")
@@ -154,9 +154,12 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 1 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "values": [ {
+"args": [  ],
+"method": "make_attack"
+}, {
 "args": [  ],
 "method": "finish_attack"
 } ]
@@ -216,8 +219,8 @@ script = ExtResource( 39 )
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
-animation = "idle"
-frame = 1
+animation = "run"
+frame = 4
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
