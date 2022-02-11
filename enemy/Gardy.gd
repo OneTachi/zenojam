@@ -9,8 +9,8 @@ onready var anim = anim_tree['parameters/playback']
 
 enum {
 	WALK,
-	ATTACK,
-	BATTACK
+	RUN,
+	BASIC_ATTACK
 }
 
 var state = WALK
@@ -24,7 +24,8 @@ var attacking = false
 
 func _physics_process(delta):
 	randomize()
-	#print(anim.get_current_node())
+	print(anim.get_current_node())
+	print(state)
 	match state:
 		
 		WALK:
@@ -45,17 +46,19 @@ func _physics_process(delta):
 			velocity.y += 10
 			velocity.y = min(velocity.y, 100)
 		
-		ATTACK:
+		RUN:
 			walk_dir = position.direction_to(player.position)
+			sprite.offset = Vector2(0, 0)
 			walk_dir.y = 0
 			velocity = walk_dir * 200
 			anim.travel('run')
 			change_sprite_dir()
 			if self.position.distance_to(player.position) < 50:
-				attacking = true
-				anim.travel('attack1')
-			if attacking:
-				velocity = Vector2.ZERO
+				state = BASIC_ATTACK
+		BASIC_ATTACK:
+			anim.travel('attack1')
+			velocity = Vector2.ZERO
+			change_sprite_dir()
 	
 	move_and_slide(velocity)
 
@@ -70,11 +73,10 @@ func change_sprite_dir():
 		pass
 
 func make_attack():
-	if attacking:
-		if not sprite.flip_h: 
-			sprite.offset = Vector2(9.5, -8.5)
-		elif sprite.flip_h:
-			sprite.offset = Vector2(-9.5, -8.5)
+	if not sprite.flip_h: 
+		sprite.offset = Vector2(9.5, -8.5)
+	elif sprite.flip_h:
+		sprite.offset = Vector2(-9.5, -8.5)
 
 func _on_WalkingHere_timeout():
 	var new_position = rand_range(-150, 150)
@@ -90,8 +92,6 @@ func _on_EnemyDetection_body_entered(body):
 
 func finish_attack():
 	if self.position.distance_to(player.position) > 50:
-		attacking = false
-		anim.travel('run')
-		sprite.offset = Vector2(0, 0)
-	print('breakign')
+		state = RUN
+
 

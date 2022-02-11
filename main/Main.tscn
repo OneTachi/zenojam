@@ -4,10 +4,10 @@
 [ext_resource path="res://assets/block.png" type="Texture" id=2]
 [ext_resource path="res://enemy/Gardy.tscn" type="PackedScene" id=3]
 
-[sub_resource type="ConvexPolygonShape2D" id=2]
+[sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 16, 16, 0.187557, 16, 0.187557, 0.0940895, 16, 0.0940895 )
 
-[sub_resource type="TileSet" id=3]
+[sub_resource type="TileSet" id=2]
 0/name = "block.png 0"
 0/texture = ExtResource( 2 )
 0/tex_offset = Vector2( 0, 0 )
@@ -18,19 +18,19 @@ points = PoolVector2Array( 16, 16, 0.187557, 16, 0.187557, 0.0940895, 16, 0.0940
 0/navigation_offset = Vector2( 0, 0 )
 0/shape_offset = Vector2( 0, 0 )
 0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-0/shape = SubResource( 2 )
+0/shape = SubResource( 1 )
 0/shape_one_way = false
 0/shape_one_way_margin = 1.0
 0/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 2 ),
+"shape": SubResource( 1 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 0/z_index = 0
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 193.097, 380.201 )
 
 [node name="Main" type="Node2D"]
@@ -43,7 +43,7 @@ scale = Vector2( 1.33333, 1.33333 )
 current = true
 
 [node name="TileMap" type="TileMap" parent="."]
-tile_set = SubResource( 3 )
+tile_set = SubResource( 2 )
 cell_size = Vector2( 16, 16 )
 collision_layer = 0
 collision_mask = 3
@@ -60,6 +60,5 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Restriction"]
 position = Vector2( 511, 286.135 )
 scale = Vector2( 2.57384, 0.772919 )
-shape = SubResource( 4 )
-
+shape = SubResource( 3 )
 [connection signal="body_shape_exited" from="Restriction" to="Gardy" method="_on_Restriction_body_shape_exited"]
