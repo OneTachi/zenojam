@@ -54,7 +54,12 @@ func _physics_process(delta):
 			walk_dir.y = 0
 			velocity = walk_dir * 200
 			change_sprite_dir()
-			if self.position.distance_to(player.position) < 50:
+			var player_distance = self.position.distance_to(player.position)
+			if rand_range(0, 1000) > 50 && player_distance > 50 && player_distance < 175:
+				#YIELD TODO
+				state = DASH
+				
+			if player_distance < 50:
 				state = BASIC_ATTACK
 		
 		BASIC_ATTACK:
@@ -62,14 +67,14 @@ func _physics_process(delta):
 			velocity = Vector2.ZERO
 			if anim.get_current_node() == 'attack1':
 				make_attack()
-			if rand_range(0, 1000) > 50:
-				state = DASH
 		
 		DASH: 
 			var fDir = 1
+			var sOffset = Vector2(0, -4)
+			sprite.offset = sOffset
 			if not sprite.flip_h:
 				fDir = -fDir
-			velocity.x = fDir * 100
+			velocity.x = fDir * 350
 			anim.travel('dash')
 	
 	move_and_slide(velocity)
@@ -97,6 +102,9 @@ func _on_Restriction_body_shape_exited(body_rid, body, body_shape_index, local_s
 	walk_to = Vector2(-walk_to.x, self.position.y)
 func _on_EnemyDetection_body_entered(body):
 	state = 1
+
+func finish_dash():
+	state = RUN
 func finish_attack():
 	if self.position.distance_to(player.position) > 50:
 		state = RUN
