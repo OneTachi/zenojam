@@ -10,7 +10,8 @@ onready var anim = anim_tree['parameters/playback']
 enum {
 	WALK,
 	RUN,
-	BASIC_ATTACK
+	BASIC_ATTACK,
+	DASH,
 }
 
 var state = WALK
@@ -61,7 +62,15 @@ func _physics_process(delta):
 			velocity = Vector2.ZERO
 			if anim.get_current_node() == 'attack1':
 				make_attack()
-			change_sprite_dir()
+			if rand_range(0, 1000) > 50:
+				state = DASH
+		
+		DASH: 
+			var fDir = 1
+			if not sprite.flip_h:
+				fDir = -fDir
+			velocity.x = fDir * 100
+			anim.travel('dash')
 	
 	move_and_slide(velocity)
 
@@ -88,7 +97,6 @@ func _on_Restriction_body_shape_exited(body_rid, body, body_shape_index, local_s
 	walk_to = Vector2(-walk_to.x, self.position.y)
 func _on_EnemyDetection_body_entered(body):
 	state = 1
-
 func finish_attack():
 	if self.position.distance_to(player.position) > 50:
 		state = RUN
