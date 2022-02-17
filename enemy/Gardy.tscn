@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=2]
+[gd_scene load_steps=69 format=2]
 
 [ext_resource path="res://assets/skeleton_sword/skeleton_sword/attack2_4.png" type="Texture" id=1]
 [ext_resource path="res://assets/skeleton_sword/skeleton_sword/attack2_5.png" type="Texture" id=2]
@@ -68,9 +68,9 @@ animations = [ {
 "speed": 6.0
 }, {
 "frames": [ ExtResource( 16 ), ExtResource( 20 ), ExtResource( 13 ), ExtResource( 23 ), ExtResource( 21 ) ],
-"loop": true,
+"loop": false,
 "name": "dash",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [ ExtResource( 34 ), ExtResource( 33 ), ExtResource( 37 ) ],
 "loop": true,
@@ -128,18 +128,22 @@ animation = "walk"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=27]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=28]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=29]
+
 [sub_resource type="AnimationNodeStateMachine" id=16]
 states/attack1/node = SubResource( 4 )
 states/attack1/position = Vector2( 694, 123 )
 states/dash/node = SubResource( 23 )
-states/dash/position = Vector2( 525, 213 )
+states/dash/position = Vector2( 495, 44 )
 states/idle/node = SubResource( 5 )
 states/idle/position = Vector2( 202, 50 )
 states/run/node = SubResource( 6 )
 states/run/position = Vector2( 376, 123 )
 states/walk/node = SubResource( 7 )
 states/walk/position = Vector2( 202, 161 )
-transitions = [ "idle", "run", SubResource( 8 ), "run", "idle", SubResource( 9 ), "idle", "walk", SubResource( 10 ), "walk", "run", SubResource( 11 ), "walk", "idle", SubResource( 12 ), "run", "walk", SubResource( 13 ), "run", "attack1", SubResource( 14 ), "attack1", "run", SubResource( 15 ), "dash", "attack1", SubResource( 24 ), "dash", "run", SubResource( 25 ), "attack1", "dash", SubResource( 26 ), "run", "dash", SubResource( 27 ) ]
+transitions = [ "idle", "run", SubResource( 8 ), "run", "idle", SubResource( 9 ), "idle", "walk", SubResource( 10 ), "walk", "run", SubResource( 11 ), "walk", "idle", SubResource( 12 ), "run", "walk", SubResource( 13 ), "run", "attack1", SubResource( 14 ), "attack1", "run", SubResource( 15 ), "dash", "attack1", SubResource( 24 ), "dash", "run", SubResource( 25 ), "attack1", "dash", SubResource( 26 ), "run", "dash", SubResource( 27 ), "idle", "dash", SubResource( 28 ), "dash", "idle", SubResource( 29 ) ]
 start_node = "idle"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=17]
@@ -176,7 +180,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=22]
 resource_name = "dash"
-length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:animation")
 tracks/0/interp = 1
@@ -184,7 +187,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ "dash", "dash" ]
@@ -196,7 +199,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.3 ),
+"times": PoolRealArray( 1 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
@@ -256,6 +259,7 @@ script = ExtResource( 39 )
 [node name="Sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
 animation = "idle"
+frame = 2
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -12,6 +12,7 @@ enum {
 	RUN,
 	BASIC_ATTACK,
 	DASH,
+	WAIT,
 }
 
 var state = WALK
@@ -22,6 +23,7 @@ var walk_dir
 
 var outside = false
 var attacking = false
+var redirect = DASH
 
 func _physics_process(delta):
 	randomize()
@@ -53,12 +55,15 @@ func _physics_process(delta):
 				sprite.offset = Vector2(0, 0)
 			walk_dir.y = 0
 			velocity = walk_dir * 200
+			#print(velocity)
+			#velocity = Vector2(199.92,0)
 			change_sprite_dir()
 			var player_distance = self.position.distance_to(player.position)
 			if rand_range(0, 1000) > 50 && player_distance > 50 && player_distance < 175:
 				#YIELD TODO
-				state = DASH
-				
+				redirect = DASH
+				state = WAIT
+			
 			if player_distance < 50:
 				state = BASIC_ATTACK
 		
@@ -70,12 +75,18 @@ func _physics_process(delta):
 		
 		DASH: 
 			var fDir = 1
-			var sOffset = Vector2(0, -4)
-			sprite.offset = sOffset
+			#var sOffset = Vector2(0, -4)
+			#sprite.offset = sOffset
 			if not sprite.flip_h:
 				fDir = -fDir
-			velocity.x = fDir * 350
+			velocity.x = fDir * 150
 			anim.travel('dash')
+		
+		WAIT:
+			anim.travel('idle')
+			velocity = Vector2.ZERO
+			yield(get_tree().create_timer(.4), "timeout")
+			state = redirect
 	
 	move_and_slide(velocity)
 
@@ -104,7 +115,8 @@ func _on_EnemyDetection_body_entered(body):
 	state = 1
 
 func finish_dash():
-	state = RUN
+	redirect = RUN
+	state = WAIT
 func finish_attack():
 	if self.position.distance_to(player.position) > 50:
 		state = RUN
