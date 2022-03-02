@@ -28,6 +28,8 @@ var redirect = DASH
 func _physics_process(delta):
 	randomize()
 	#print(anim.get_current_node())
+	#print(sprite.offset)
+	print(sprite.flip_h)
 	#print(state)
 	match state:
 		
@@ -49,17 +51,15 @@ func _physics_process(delta):
 			velocity.y = min(velocity.y, 100)
 		
 		RUN:
+			change_sprite_dir()
 			walk_dir = position.direction_to(player.position)
 			anim.travel('run')
 			if anim.get_current_node() == 'run':
 				sprite.offset = Vector2(0, 0)
 			walk_dir.y = 0
 			velocity = walk_dir * 200
-			#print(velocity)
-			#velocity = Vector2(199.92,0)
-			change_sprite_dir()
 			var player_distance = self.position.distance_to(player.position)
-			if rand_range(0, 1000) > 50 && player_distance > 50 && player_distance < 175:
+			if rand_range(0, 1000) > 999 && player_distance > 50 && player_distance < 175:
 				#YIELD TODO
 				redirect = DASH
 				state = WAIT
@@ -86,6 +86,7 @@ func _physics_process(delta):
 			anim.travel('idle')
 			velocity = Vector2.ZERO
 			yield(get_tree().create_timer(.4), "timeout")
+			#print('doin')
 			state = redirect
 	
 	move_and_slide(velocity)
