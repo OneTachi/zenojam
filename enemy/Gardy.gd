@@ -15,7 +15,7 @@ enum {
 	WAIT,
 }
 
-var state = WALK
+var state = WALK setget set_state
 var velocity = Vector2(0,0)
 
 onready var walk_to = Vector2(rand_range(-200, 200), self.position.y)
@@ -24,12 +24,13 @@ var walk_dir
 var outside = false
 var attacking = false
 var redirect = DASH
+onready var predetermined_action = pick_next_move() 
 
 func _physics_process(delta):
 	randomize()
 	#print(anim.get_current_node())
 	#print(sprite.offset)
-	print(sprite.flip_h)
+	#print(sprite.flip_h)
 	#print(state)
 	match state:
 		
@@ -52,20 +53,25 @@ func _physics_process(delta):
 		
 		RUN:
 			change_sprite_dir()
+			
+			#Direction to run to
 			walk_dir = position.direction_to(player.position)
+			walk_dir.y = 0
+			
 			anim.travel('run')
 			if anim.get_current_node() == 'run':
 				sprite.offset = Vector2(0, 0)
-			walk_dir.y = 0
-			velocity = walk_dir * 200
-			var player_distance = self.position.distance_to(player.position)
-			if rand_range(0, 1000) > 999 && player_distance > 50 && player_distance < 175:
-				#YIELD TODO
-				redirect = DASH
-				state = WAIT
 			
+			
+			velocity = walk_dir * 200
+			
+			#Action to do when in distance
+			var player_distance = self.position.distance_to(player.position)
+			if player_distance > 50 && player_distance < 175:
+				if predetermined_action != RUN:
+					self.state = predetermined_action
 			if player_distance < 50:
-				state = BASIC_ATTACK
+				self.state = BASIC_ATTACK
 		
 		BASIC_ATTACK:
 			anim.travel('attack1')
@@ -75,8 +81,6 @@ func _physics_process(delta):
 		
 		DASH: 
 			var fDir = 1
-			#var sOffset = Vector2(0, -4)
-			#sprite.offset = sOffset
 			if not sprite.flip_h:
 				fDir = -fDir
 			velocity.x = fDir * 150
@@ -85,9 +89,12 @@ func _physics_process(delta):
 		WAIT:
 			anim.travel('idle')
 			velocity = Vector2.ZERO
-			yield(get_tree().create_timer(.4), "timeout")
-			#print('doin')
-			state = redirect
+			
+			#Weird Buildup of speed using yield
+			#yield(get_tree().create_timer(.4), "timeout")
+			if $WaitTimer.is_stopped():
+				$WaitTimer.start(.4)
+			
 	
 	move_and_slide(velocity)
 
@@ -98,9 +105,8 @@ func change_sprite_dir():
 	elif velocity.x < 0:
 		sprite.flip_h = true
 		raycast.cast_to = Vector2(0, -20)
-	else:
-		pass
 
+#Changing sprite direction when attacking
 func make_attack():
 	if not sprite.flip_h: 
 		sprite.offset = Vector2(9.5, -8)
@@ -110,14 +116,31 @@ func make_attack():
 func _on_WalkingHere_timeout():
 	var new_position = rand_range(-150, 150)
 	walk_to = Vector2(new_position, self.position.y)
-func _on_Restriction_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
-	walk_to = Vector2(-walk_to.x, self.position.y)
 func _on_EnemyDetection_body_entered(body):
-	state = 1
+	self.state = RUN
 
+func set_state(new_state):
+	if state != new_state:
+		predetermined_action = pick_next_move()
+	state = new_state
+
+
+#Animations dictage changes to states
 func finish_dash():
 	redirect = RUN
-	state = WAIT
+	self.state = WAIT
 func finish_attack():
 	if self.position.distance_to(player.position) > 50:
-		state = RUN
+		self.state = RUN
+
+
+func pick_next_move():
+	#Run will auto turn to basic attack
+	var moves = [DASH, RUN, RUN]
+	moves.shuffle()
+	#print(moves)
+	return moves.pop_front()
+
+
+func _on_WaitTimer_timeout():
+	self.state = redirect

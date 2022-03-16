@@ -47,14 +47,14 @@ animations = [ {
 "name": "idle",
 "speed": 2.0
 }, {
-"frames": [ ExtResource( 26 ), ExtResource( 22 ), ExtResource( 19 ) ],
-"loop": true,
-"name": "hit",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 28 ), ExtResource( 30 ), ExtResource( 29 ), ExtResource( 31 ), ExtResource( 32 ), ExtResource( 18 ) ],
 "loop": true,
 "name": "run",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 26 ), ExtResource( 22 ), ExtResource( 19 ) ],
+"loop": true,
+"name": "hit",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 11 ), ExtResource( 5 ), ExtResource( 8 ), ExtResource( 10 ), ExtResource( 7 ), ExtResource( 12 ) ],
@@ -92,19 +92,17 @@ radius = 167.501
 [sub_resource type="AnimationNodeAnimation" id=4]
 animation = "attack1"
 
-[sub_resource type="AnimationNodeAnimation" id=23]
+[sub_resource type="AnimationNodeAnimation" id=5]
 animation = "dash"
 
-[sub_resource type="AnimationNodeAnimation" id=5]
+[sub_resource type="AnimationNodeAnimation" id=6]
 animation = "idle"
 
-[sub_resource type="AnimationNodeAnimation" id=6]
+[sub_resource type="AnimationNodeAnimation" id=7]
 animation = "run"
 
-[sub_resource type="AnimationNodeAnimation" id=7]
+[sub_resource type="AnimationNodeAnimation" id=8]
 animation = "walk"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=8]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=9]
 
@@ -120,36 +118,37 @@ animation = "walk"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=15]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=24]
+[sub_resource type="AnimationNodeStateMachineTransition" id=16]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=25]
+[sub_resource type="AnimationNodeStateMachineTransition" id=17]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=26]
+[sub_resource type="AnimationNodeStateMachineTransition" id=18]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=27]
+[sub_resource type="AnimationNodeStateMachineTransition" id=19]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=28]
+[sub_resource type="AnimationNodeStateMachineTransition" id=20]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=29]
+[sub_resource type="AnimationNodeStateMachineTransition" id=21]
 
-[sub_resource type="AnimationNodeStateMachine" id=16]
+[sub_resource type="AnimationNodeStateMachineTransition" id=22]
+
+[sub_resource type="AnimationNodeStateMachine" id=23]
 states/attack1/node = SubResource( 4 )
 states/attack1/position = Vector2( 694, 123 )
-states/dash/node = SubResource( 23 )
+states/dash/node = SubResource( 5 )
 states/dash/position = Vector2( 495, 44 )
-states/idle/node = SubResource( 5 )
+states/idle/node = SubResource( 6 )
 states/idle/position = Vector2( 202, 50 )
-states/run/node = SubResource( 6 )
+states/run/node = SubResource( 7 )
 states/run/position = Vector2( 376, 123 )
-states/walk/node = SubResource( 7 )
+states/walk/node = SubResource( 8 )
 states/walk/position = Vector2( 202, 161 )
-transitions = [ "idle", "run", SubResource( 8 ), "run", "idle", SubResource( 9 ), "idle", "walk", SubResource( 10 ), "walk", "run", SubResource( 11 ), "walk", "idle", SubResource( 12 ), "run", "walk", SubResource( 13 ), "run", "attack1", SubResource( 14 ), "attack1", "run", SubResource( 15 ), "dash", "attack1", SubResource( 24 ), "dash", "run", SubResource( 25 ), "attack1", "dash", SubResource( 26 ), "run", "dash", SubResource( 27 ), "idle", "dash", SubResource( 28 ), "dash", "idle", SubResource( 29 ) ]
+transitions = [ "idle", "run", SubResource( 9 ), "run", "idle", SubResource( 10 ), "idle", "walk", SubResource( 11 ), "walk", "run", SubResource( 12 ), "walk", "idle", SubResource( 13 ), "run", "walk", SubResource( 14 ), "run", "attack1", SubResource( 15 ), "attack1", "run", SubResource( 16 ), "dash", "attack1", SubResource( 17 ), "dash", "run", SubResource( 18 ), "attack1", "dash", SubResource( 19 ), "run", "dash", SubResource( 20 ), "idle", "dash", SubResource( 21 ), "dash", "idle", SubResource( 22 ) ]
 start_node = "idle"
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=17]
+[sub_resource type="AnimationNodeStateMachinePlayback" id=24]
 
-[sub_resource type="Animation" id=18]
-resource_name = "attack1"
+[sub_resource type="Animation" id=25]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:animation")
@@ -178,8 +177,7 @@ tracks/1/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=22]
-resource_name = "dash"
+[sub_resource type="Animation" id=26]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:animation")
 tracks/0/interp = 1
@@ -207,7 +205,7 @@ tracks/1/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=19]
+[sub_resource type="Animation" id=27]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:animation")
@@ -222,7 +220,7 @@ tracks/0/keys = {
 "values": [ "idle", "idle" ]
 }
 
-[sub_resource type="Animation" id=20]
+[sub_resource type="Animation" id=28]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:animation")
 tracks/0/interp = 1
@@ -236,7 +234,7 @@ tracks/0/keys = {
 "values": [ "run", "run" ]
 }
 
-[sub_resource type="Animation" id=21]
+[sub_resource type="Animation" id=29]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:animation")
 tracks/0/interp = 1
@@ -259,7 +257,6 @@ script = ExtResource( 39 )
 [node name="Sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
 animation = "idle"
-frame = 2
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -281,16 +278,20 @@ collision_layer = 0
 shape = SubResource( 3 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 16 )
+tree_root = SubResource( 23 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
-parameters/playback = SubResource( 17 )
+parameters/playback = SubResource( 24 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/attack1 = SubResource( 18 )
-anims/dash = SubResource( 22 )
-anims/idle = SubResource( 19 )
-anims/run = SubResource( 20 )
-anims/walk = SubResource( 21 )
+anims/attack1 = SubResource( 25 )
+anims/dash = SubResource( 26 )
+anims/idle = SubResource( 27 )
+anims/run = SubResource( 28 )
+anims/walk = SubResource( 29 )
+
+[node name="WaitTimer" type="Timer" parent="."]
+one_shot = true
 [connection signal="timeout" from="WalkingHere!" to="." method="_on_WalkingHere_timeout"]
 [connection signal="body_entered" from="EnemyDetection" to="." method="_on_EnemyDetection_body_entered"]
+[connection signal="timeout" from="WaitTimer" to="." method="_on_WaitTimer_timeout"]
